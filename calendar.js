@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     currentUser = username;
     welcomeMessage.textContent = `Hola, ${currentUser}. Selecciona tus días:`;
-    calendarContainer.style.display = "block";
+    calendarContainer.style.display = "block"; // Mostrar el calendario
     generateCalendar();
   });
 
@@ -138,7 +138,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     alert(`Usuario: ${currentUser}\nDías seleccionados: ${selectedDays.join(", ")}`);
 
-    saveRegisteredUsers(daysState);
+    saveRegisteredUsers(daysState); // Guardar la selección en localStorage
 
     // Reiniciar para el siguiente usuario
     currentUser = "";
