@@ -9,17 +9,14 @@ document.addEventListener("DOMContentLoaded", function () {
   const maxDaysPerPerson = 4;
   const maxQuotaPerDay = 5;
 
-  // Estado del sistema
   let daysState = Array.from({ length: 31 }, (_, i) => ({
     day: i + 1,
     quota: 0,
     selectedBy: [],
   }));
+
   let selectedDays = [];
   let currentUser = "";
-  const registeredUsers = loadRegisteredUsers();
-
-  // Obtener el mes actual
   const currentMonth = new Date().getMonth() + 1;
 
   // Cargar usuarios registrados desde localStorage
@@ -67,8 +64,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     currentUser = username;
     welcomeMessage.textContent = `Hola, ${currentUser}. Selecciona tus días:`;
-    calendarContainer.style.display = "block"; // Mostrar el calendario
-    generateCalendar();
+    calendarContainer.style.display = "block"; // Mostrar calendario
+    generateCalendar(); // Generar el calendario
   });
 
   // Generar el calendario
