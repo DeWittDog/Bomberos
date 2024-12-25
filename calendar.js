@@ -13,22 +13,22 @@ document.addEventListener("DOMContentLoaded", function () {
   const daysState = Array.from({ length: 31 }, (_, i) => ({
     day: i + 1,
     quota: 0,
-    selectedBy: [], // Almacena los nombres de los usuarios que seleccionaron este día
+    selectedBy: [], // Usuarios que seleccionaron este día
   }));
   let selectedDays = [];
   let currentUser = "";
 
-  // Iniciar sesión con nombre
+  // Manejo del botón "Iniciar"
   startButton.addEventListener("click", function () {
-    const username = usernameInput.value.trim();
+    const username = usernameInput.value.trim(); // Eliminar espacios
     if (!username) {
       alert("Por favor, ingrese su nombre.");
       return;
     }
-    currentUser = username;
+    currentUser = username; // Guardar nombre del usuario
     welcomeMessage.textContent = `Hola, ${currentUser}. Selecciona tus días:`;
-    calendarContainer.style.display = "block";
-    generateCalendar();
+    calendarContainer.style.display = "block"; // Mostrar calendario
+    generateCalendar(); // Generar calendario dinámico
   });
 
   // Generar el calendario
