@@ -1,37 +1,43 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Formulario de Inscripción para Bomberos</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Inscripción para Turnos</title>
+    <style>
+        .calendar-container {
+            display: none;
+        }
+        .day {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            margin: 5px;
+            text-align: center;
+            line-height: 30px;
+            border: 1px solid #000;
+            cursor: pointer;
+        }
+        .day.selected {
+            background-color: #0f0;
+        }
+        .day.disabled {
+            background-color: #f00;
+            cursor: not-allowed;
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Formulario de Inscripción</h1>
-
-    <!-- Formulario de inicio de sesión con nombre -->
-    <div class="login-container">
-      <input type="text" id="username" placeholder="Ingresa tu nombre">
-      <button id="start">Iniciar</button>
-    </div>
-
-    <!-- Mensaje de bienvenida -->
+    <h1>Formulario de Inscripción para Turnos</h1>
+    <input type="text" id="username" placeholder="Ingrese su nombre" required>
+    <button id="start">Iniciar</button>
     <div id="welcome-message"></div>
 
-    <!-- Calendario -->
-    <div class="calendar-container" style="display:none;">
-      <h2>Selecciona tus días</h2>
-      <div id="calendar"></div>
-      <button id="submit">Enviar</button>
+    <div class="calendar-container">
+        <div id="calendar"></div>
+        <button id="submit">Enviar</button>
     </div>
-  </div>
 
-  <script src="calendar.js"></script>
-</body>
-</html>
-
-  
-  <script src="calendar.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
