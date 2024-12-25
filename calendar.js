@@ -143,4 +143,7 @@ document.addEventListener("DOMContentLoaded", function () {
     usernameInput.value = "";
     calendarContainer.style.display = "none";
   });
+
+  // Cargar datos al iniciar
+  loadRegisteredUsers();
 });
