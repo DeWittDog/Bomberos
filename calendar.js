@@ -10,69 +10,65 @@ document.addEventListener("DOMContentLoaded", function () {
   const maxQuotaPerDay = 5;
 
   // Estado del sistema
-  const daysState = Array.from({ length: 31 }, (_, i) => ({
+  let daysState = Array.from({ length: 31 }, (_, i) => ({
     day: i + 1,
     quota: 0,
-    selectedBy: [], // Usuarios que seleccionaron este día
+    selectedBy: [],
   }));
   let selectedDays = [];
   let currentUser = "";
-  const registeredUsers = loadRegisteredUsers(); // Cargar usuarios registrados
+  const registeredUsers = loadRegisteredUsers();
 
   // Obtener el mes actual
-  const currentMonth = new Date().getMonth() + 1; // Enero = 0, así que sumamos 1
+  const currentMonth = new Date().getMonth() + 1;
 
   // Cargar usuarios registrados desde localStorage
   function loadRegisteredUsers() {
     const data = JSON.parse(localStorage.getItem("registeredUsers")) || {};
-    const storedMonth = data.month;
-    const days = data.days || [];
+    const storedMonth = data.month || null;
+    const days = data.days || daysState;
 
     // Si el mes almacenado no coincide con el mes actual, reiniciar
     if (storedMonth !== currentMonth) {
+      saveRegisteredUsers([]); // Reiniciar los datos
       return { month: currentMonth, days: daysState };
     }
 
-    // Actualizar días con los cupos previos
-    days.forEach((day, index) => {
-      daysState[index].quota = day.quota;
-      daysState[index].selectedBy = day.selectedBy;
-    });
-
-    return { month: storedMonth, days: daysState };
+    daysState = days; // Actualizar el estado de los días
+    return { month: storedMonth, days };
   }
 
   // Guardar usuarios registrados en localStorage
-  function saveRegisteredUsers() {
+  function saveRegisteredUsers(updatedDays) {
     const data = {
       month: currentMonth,
-      days: daysState.map((day) => ({
-        day: day.day,
-        quota: day.quota,
-        selectedBy: day.selectedBy,
-      })),
+      days: updatedDays || daysState,
     };
     localStorage.setItem("registeredUsers", JSON.stringify(data));
   }
 
   // Manejo del botón "Iniciar"
   startButton.addEventListener("click", function () {
-    const username = usernameInput.value.trim(); // Eliminar espacios
+    const username = usernameInput.value.trim();
     if (!username) {
       alert("Por favor, ingrese su nombre.");
       return;
     }
 
-    // Verificar si el usuario ya está registrado
-    if (registeredUsers.days.some((day) => day.selectedBy.includes(username))) {
+    // Verificar si el usuario ya seleccionó días
+    const userAlreadyRegistered = daysState.some((day) =>
+      day.selectedBy.includes(username)
+    );
+
+    if (userAlreadyRegistered) {
       alert(`El usuario "${username}" ya seleccionó días este mes.`);
       return;
     }
 
-    currentUser = username; // Guardar nombre del usuario
+    currentUser = username;
     welcomeMessage.textContent = `Hola, ${currentUser}. Selecciona tus días:`;
-    calendarContainer.style.display = "block"; // Mostrar calendario
-    generateCalendar(); // Generar calendario dinámico
+    calendarContainer.style.display = "block";
+    generateCalendar();
   });
 
   // Generar el calendario
@@ -91,8 +87,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
       if (dayState.quota >= maxQuotaPerDay) {
         dayElement.classList.add("disabled");
-      } else if (dayState.selectedBy.includes(currentUser)) {
-        dayElement.classList.add("selected");
       }
 
       dayElement.addEventListener("click", function () {
@@ -105,7 +99,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Manejar la selección de días
   function handleDaySelection(dayState, dayElement) {
-    if (dayState.quota >= maxQuotaPerDay && !dayState.selectedBy.includes(currentUser)) {
+    if (dayState.quota >= maxQuotaPerDay) {
       alert("Este día ya alcanzó el cupo máximo.");
       return;
     }
@@ -113,19 +107,22 @@ document.addEventListener("DOMContentLoaded", function () {
     if (selectedDays.includes(dayState.day)) {
       // Deseleccionar
       selectedDays = selectedDays.filter((day) => day !== dayState.day);
-      dayElement.classList.remove("selected");
       dayState.quota -= 1;
-      dayState.selectedBy = dayState.selectedBy.filter((user) => user !== currentUser);
+      dayState.selectedBy = dayState.selectedBy.filter(
+        (user) => user !== currentUser
+      );
+      dayElement.classList.remove("selected");
     } else {
       if (selectedDays.length >= maxDaysPerPerson) {
         alert(`Solo puedes seleccionar hasta ${maxDaysPerPerson} días.`);
         return;
       }
+
       // Seleccionar
       selectedDays.push(dayState.day);
-      dayElement.classList.add("selected");
       dayState.quota += 1;
       dayState.selectedBy.push(currentUser);
+      dayElement.classList.add("selected");
     }
 
     // Actualizar la cuota visualmente
@@ -141,19 +138,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     alert(`Usuario: ${currentUser}\nDías seleccionados: ${selectedDays.join(", ")}`);
 
-    // Guardar selección en los días
-    selectedDays.forEach((day) => {
-      const dayState = daysState.find((d) => d.day === day);
-      if (dayState && !dayState.selectedBy.includes(currentUser)) {
-        dayState.quota += 1;
-        dayState.selectedBy.push(currentUser);
-      }
-    });
+    saveRegisteredUsers(daysState);
 
-    // Guardar en localStorage
-    saveRegisteredUsers();
-
-    // Reiniciar la selección para el siguiente usuario
+    // Reiniciar para el siguiente usuario
     currentUser = "";
     selectedDays = [];
     usernameInput.value = "";
