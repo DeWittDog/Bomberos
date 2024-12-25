@@ -3,19 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Formulario de Calendario</title>
+  <title>Formulario de Selección de Días</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <h1>Formulario de Selección de Días</h1>
   <p>Ingrese su nombre y seleccione hasta 4 días. Cada día tiene un cupo máximo de 5 personas.</p>
   
+  <!-- Sección de ingreso del nombre -->
   <div class="user-input">
     <label for="username">Nombre:</label>
     <input type="text" id="username" placeholder="Ingrese su nombre" />
     <button id="start">Iniciar</button>
   </div>
   
+  <!-- Contenedor del calendario -->
   <div class="calendar-container" style="display: none;">
     <h2 id="welcome-message"></h2>
     <div class="calendar" id="calendar"></div>
