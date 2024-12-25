@@ -1,27 +1,61 @@
-.user-input {
+body {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+}
+
+h1 {
   text-align: center;
-  margin-bottom: 20px;
 }
 
-.user-input input {
+.calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.day {
+  border: 1px solid #ccc;
   padding: 10px;
-  font-size: 16px;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+  background-color: #f9f9f9;
 }
 
-.user-input button {
+.day.disabled {
+  background-color: #f8d7da;
+  color: #721c24;
+  cursor: not-allowed;
+}
+
+.day.selected {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.day .quota {
+  font-size: 0.8em;
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+}
+
+.controls {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.controls button {
   padding: 10px 20px;
   font-size: 16px;
-  margin-left: 10px;
+  cursor: pointer;
   background-color: #007bff;
   color: white;
   border: none;
-  cursor: pointer;
+  border-radius: 5px;
 }
 
-.user-input button:hover {
+.controls button:hover {
   background-color: #0056b3;
 }
-
-  background-color: #0056b3;
-}
-
