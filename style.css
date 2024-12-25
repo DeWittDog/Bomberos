@@ -1,78 +1,27 @@
-body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 20px;
-  background-color: #f4f4f9;
-}
-
-.container {
-  max-width: 600px;
-  margin: 0 auto;
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-h1 {
+.user-input {
   text-align: center;
+  margin-bottom: 20px;
 }
 
-#username {
+.user-input input {
   padding: 10px;
-  width: 80%;
-  margin-right: 10px;
+  font-size: 16px;
 }
 
-button {
+.user-input button {
   padding: 10px 20px;
-  background-color: #4CAF50;
+  font-size: 16px;
+  margin-left: 10px;
+  background-color: #007bff;
   color: white;
   border: none;
   cursor: pointer;
-  border-radius: 5px;
-}
-
-button:disabled {
-  background-color: #ccc;
-}
-
-#calendar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.day {
-  width: 30px;
-  height: 30px;
-  background-color: #e0e0e0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  border-radius: 5px;
-  font-size: 14px;
-  color: #333;
-  text-align: center;
-}
-
-.day.selected {
-  background-color: #4CAF50;
-  color: white;
-}
-
-.day.disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
-}
-
-.quota {
-  font-size: 12px;
-  color: #333;
 }
 
 .user-input button:hover {
+  background-color: #0056b3;
+}
+
   background-color: #0056b3;
 }
 
