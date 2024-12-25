@@ -17,6 +17,33 @@ document.addEventListener("DOMContentLoaded", function () {
   }));
   let selectedDays = [];
   let currentUser = "";
+  const registeredUsers = loadRegisteredUsers(); // Cargar usuarios registrados
+
+  // Obtener el mes actual
+  const currentMonth = new Date().getMonth() + 1; // Enero = 0, así que sumamos 1
+
+  // Cargar usuarios registrados desde localStorage
+  function loadRegisteredUsers() {
+    const data = JSON.parse(localStorage.getItem("registeredUsers")) || {};
+    const storedMonth = data.month;
+    const users = data.users || [];
+
+    // Si el mes almacenado no coincide con el mes actual, reiniciar
+    if (storedMonth !== currentMonth) {
+      return { month: currentMonth, users: new Set() };
+    }
+
+    return { month: storedMonth, users: new Set(users) };
+  }
+
+  // Guardar usuarios registrados en localStorage
+  function saveRegisteredUsers() {
+    const data = {
+      month: currentMonth,
+      users: Array.from(registeredUsers.users),
+    };
+    localStorage.setItem("registeredUsers", JSON.stringify(data));
+  }
 
   // Manejo del botón "Iniciar"
   startButton.addEventListener("click", function () {
@@ -25,6 +52,13 @@ document.addEventListener("DOMContentLoaded", function () {
       alert("Por favor, ingrese su nombre.");
       return;
     }
+
+    // Verificar si el usuario ya está registrado
+    if (registeredUsers.users.has(username)) {
+      alert(`El usuario "${username}" ya se ha registrado este mes. No puede inscribirse nuevamente.`);
+      return;
+    }
+
     currentUser = username; // Guardar nombre del usuario
     welcomeMessage.textContent = `Hola, ${currentUser}. Selecciona tus días:`;
     calendarContainer.style.display = "block"; // Mostrar calendario
@@ -94,7 +128,17 @@ document.addEventListener("DOMContentLoaded", function () {
       alert("Debe seleccionar al menos un día.");
       return;
     }
+
     alert(`Usuario: ${currentUser}\nDías seleccionados: ${selectedDays.join(", ")}`);
-    // Aquí puedes enviar los datos al servidor o almacenarlos de forma persistente
+    
+    // Agregar el usuario a la lista de registrados
+    registeredUsers.users.add(currentUser);
+    saveRegisteredUsers(); // Guardar el estado actualizado
+
+    // Reiniciar la selección para el siguiente usuario
+    currentUser = "";
+    selectedDays = [];
+    usernameInput.value = "";
+    calendarContainer.style.display = "none";
   });
 });
