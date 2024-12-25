@@ -59,3 +59,28 @@ h1 {
 .controls button:hover {
   background-color: #0056b3;
 }
+
+.user-input {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.user-input input {
+  padding: 10px;
+  font-size: 16px;
+}
+
+.user-input button {
+  padding: 10px 20px;
+  font-size: 16px;
+  margin-left: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.user-input button:hover {
+  background-color: #0056b3;
+}
+
