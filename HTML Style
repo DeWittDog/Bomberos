@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formulario de Calendario</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    .calendar {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 10px;
+    }
+    .day {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: center;
+      cursor: pointer;
+      position: relative;
+    }
+    .day.disabled {
+      background-color: #f8d7da;
+      color: #721c24;
+      cursor: not-allowed;
+    }
+    .day.selected {
+      background-color: #d4edda;
+      color: #155724;
+    }
+    .day .quota {
+      font-size: 0.8em;
+      position: absolute;
+      bottom: 5px;
+      right: 5px;
+    }
+    .controls {
+      margin-top: 20px;
+    }
+    .controls button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Formulario de Calendario</h1>
+  <p>Seleccione hasta 4 días. Cada día tiene un cupo máximo de 5 personas.</p>
+  <div class="calendar" id="calendar"></div>
+  <div class="controls">
+    <button id="submit">Enviar</button>
+  </div>
+  <script src="calendar.js"></script>
+</body>
+</html>
