@@ -26,21 +26,31 @@ document.addEventListener("DOMContentLoaded", function () {
   function loadRegisteredUsers() {
     const data = JSON.parse(localStorage.getItem("registeredUsers")) || {};
     const storedMonth = data.month;
-    const users = data.users || [];
+    const days = data.days || [];
 
     // Si el mes almacenado no coincide con el mes actual, reiniciar
     if (storedMonth !== currentMonth) {
-      return { month: currentMonth, users: new Set() };
+      return { month: currentMonth, days: daysState };
     }
 
-    return { month: storedMonth, users: new Set(users) };
+    // Actualizar días con los cupos previos
+    days.forEach((day, index) => {
+      daysState[index].quota = day.quota;
+      daysState[index].selectedBy = day.selectedBy;
+    });
+
+    return { month: storedMonth, days: daysState };
   }
 
   // Guardar usuarios registrados en localStorage
   function saveRegisteredUsers() {
     const data = {
       month: currentMonth,
-      users: Array.from(registeredUsers.users),
+      days: daysState.map((day) => ({
+        day: day.day,
+        quota: day.quota,
+        selectedBy: day.selectedBy,
+      })),
     };
     localStorage.setItem("registeredUsers", JSON.stringify(data));
   }
@@ -54,8 +64,8 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Verificar si el usuario ya está registrado
-    if (registeredUsers.users.has(username)) {
-      alert(`El usuario "${username}" ya se ha registrado este mes. No puede inscribirse nuevamente.`);
+    if (registeredUsers.days.some((day) => day.selectedBy.includes(username))) {
+      alert(`El usuario "${username}" ya seleccionó días este mes.`);
       return;
     }
 
@@ -130,10 +140,18 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     alert(`Usuario: ${currentUser}\nDías seleccionados: ${selectedDays.join(", ")}`);
-    
-    // Agregar el usuario a la lista de registrados
-    registeredUsers.users.add(currentUser);
-    saveRegisteredUsers(); // Guardar el estado actualizado
+
+    // Guardar selección en los días
+    selectedDays.forEach((day) => {
+      const dayState = daysState.find((d) => d.day === day);
+      if (dayState && !dayState.selectedBy.includes(currentUser)) {
+        dayState.quota += 1;
+        dayState.selectedBy.push(currentUser);
+      }
+    });
+
+    // Guardar en localStorage
+    saveRegisteredUsers();
 
     // Reiniciar la selección para el siguiente usuario
     currentUser = "";
